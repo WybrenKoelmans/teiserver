@@ -12,6 +12,8 @@ defmodule Teiserver.OAuth.Libs.ScopeLib do
     [
       # this is for blobby/new lobby
       "tachyon.lobby",
+      # exchange a teiserver token for a firebase custom token
+      "firebase",
       # some scopes for bar specific administration and testing
       "admin.map",
       "admin.engine",
@@ -46,8 +48,9 @@ defmodule Teiserver.OAuth.Libs.ScopeLib do
   end
 
   @spec scope_allowed?(scope :: String.t(), Account.User.t()) :: boolean()
-  def scope_allowed?(scope, _user) when scope in ["tachyon.lobby", "profile", "email", "groups"],
-    do: true
+  def scope_allowed?(scope, _user)
+      when scope in ["tachyon.lobby", "firebase", "profile", "email", "groups"],
+      do: true
 
   def scope_allowed?("admin.map", user), do: Auth.admin?(user)
   def scope_allowed?("admin.engine", user), do: Auth.admin?(user)
@@ -61,6 +64,7 @@ defmodule Teiserver.OAuth.Libs.ScopeLib do
   """
   @spec scope_description(String.t()) :: String.t() | nil
   def scope_description("tachyon.lobby"), do: "Use your account to play online"
+  def scope_description("firebase"), do: "Sign you in to Beyond All Reason's Firebase services"
   def scope_description("admin.map"), do: "For CI, to setup maps data in teiserver"
   def scope_description("admin.engine"), do: "For CI, to setup engine data in teiserver"
   def scope_description("admin.user"), do: "Create users programatically. for load testing"

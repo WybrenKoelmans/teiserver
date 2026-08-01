@@ -99,6 +99,7 @@ defmodule Teiserver.MixProject do
       {:ecto_psql_extras, "~> 0.8"},
       {:breadcrumble, "~> 1.0.0"},
       {:guardian, "~> 2.1"},
+      {:joken, "~> 2.6"},
       {:argon2_elixir, "~> 4.1"},
       {:bodyguard, "~> 2.4"},
       {:oban, "~> 2.15"},

@@ -181,6 +181,25 @@ config :teiserver, Teiserver.Account.Guardian,
     ),
   ttl: {30, :days}
 
+# The service account key can come from a file (a docker/k8s secret mount, by
+# default the compose one) or straight from the environment. A missing file is
+# not an error: Firebase auth is optional and simply stays disabled.
+firebase_private_key_file =
+  Teiserver.ConfigHelpers.get_env(
+    "TEI_FIREBASE_PRIVATE_KEY_FILE",
+    "/run/secrets/firebase_private_key"
+  )
+
+firebase_private_key =
+  case File.read(firebase_private_key_file) do
+    {:ok, key} -> key
+    {:error, _reason} -> Teiserver.ConfigHelpers.get_env("TEI_FIREBASE_PRIVATE_KEY", nil)
+  end
+
+config :teiserver, :firebase,
+  email: Teiserver.ConfigHelpers.get_env("TEI_FIREBASE_EMAIL", nil),
+  private_key: firebase_private_key
+
 config :teiserver, Teiserver.OAuth,
   issuer:
     Teiserver.ConfigHelpers.get_env("TEI_OAUTH_ISSUER", nil) ||

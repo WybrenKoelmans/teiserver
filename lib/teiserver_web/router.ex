@@ -73,6 +73,17 @@ defmodule TeiserverWeb.Router do
     plug(Guardian.Plug.EnsureAuthenticated)
   end
 
+  # Bearer token authenticated json api for minting firebase custom tokens.
+  # A firebase custom token is a full sign in to firebase as that user, so
+  # delegated OAuth tokens have to hold the "firebase" scope explicitly.
+  pipeline :firebase_api do
+    plug(:accepts, ["json"])
+    plug(:put_secure_browser_headers)
+    plug(Teiserver.Logging.LoggingPlug)
+    plug(Teiserver.Account.ApiAuthPlug, scopes: ["firebase"])
+    plug(Teiserver.Plugs.CachePlug)
+  end
+
   # a pipeline to use for any api endpoint consuming json and expecting
   # authenticated access with an OAuth bearer token
   pipeline :oauth_api do
@@ -434,6 +445,11 @@ defmodule TeiserverWeb.Router do
     pipe_through([:api])
     get "/leaderboard", PublicController, :leaderboard
     get "/leaderboard/:season", PublicController, :leaderboard
+  end
+
+  scope "/teiserver/api", TeiserverWeb.API do
+    pipe_through([:firebase_api])
+    get "/firebase_token", Firebase.TokenController, :index
   end
 
   scope "/teiserver/api", TeiserverWeb.API do

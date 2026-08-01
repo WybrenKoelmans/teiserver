@@ -38,6 +38,7 @@ teiserver-*.tar
 
 # Secrets
 /config/*.secret.exs
+/secrets/
 runtime/
 
 # Static

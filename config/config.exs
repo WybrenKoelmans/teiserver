@@ -192,6 +192,11 @@ config :teiserver, Teiserver.Account.Guardian,
   secret_key: "9vJcJOYwsjdIQ9IhfOI5F9GQMykuNjBW58FY9S/TqMsq6gRdKgY05jscQAFVKfwa",
   ttl: {30, :days}
 
+# Firebase Authentication configuration.
+# Real values are read in config/runtime.exs - reading the service account key
+# here would evaluate at build time and bake it into the compiled release.
+config :teiserver, :firebase, email: nil, private_key: nil
+
 config :teiserver, Oban,
   repo: Teiserver.Repo,
   plugins: [

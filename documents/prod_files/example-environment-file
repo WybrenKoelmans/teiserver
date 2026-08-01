@@ -50,4 +50,10 @@ TEI_SMTP_TLS_VERIFY=false
 
 TEI_ENABLE_DISCORD_BRIDGE=false
 
+# Firebase custom tokens (optional, see documents/firebase_token_setup.md)
+# Leave unset to disable /teiserver/api/firebase_token
+#TEI_FIREBASE_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
+# Path to the PEM service account key. Defaults to /run/secrets/firebase_private_key
+#TEI_FIREBASE_PRIVATE_KEY_FILE=/run/secrets/firebase_private_key
+
 # vim: ft=systemd
